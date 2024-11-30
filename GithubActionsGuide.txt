@@ -1,0 +1,68 @@
+Quick Guide: Using CI/CD Workflow for Playwright Tests
+
+
+GitHub Actions CI/CD process described in the file .github/workflows/ci.yml
+Test results saved in ./test-results/results.xml.
+
+1. Triggering the Workflow
+Automatic Triggers
+The workflow starts automatically when:
+
+Code is pushed to the main branch (or any specified branch in the workflow file).
+A pull request is opened or updated targeting the main branch.
+Manual Trigger
+You can also run the workflow manually:
+
+Navigate to the Actions tab in your GitHub repository.
+Select the workflow (e.g., Playwright API Tests).
+Click the Run workflow button.
+Choose the branch to run the workflow against.
+
+2. Monitoring Workflow Progress
+Go to the Actions tab in your GitHub repository.
+Select the most recent run of the workflow.
+Expand individual steps (e.g., "Run Playwright tests") to view detailed logs, including:
+Installation logs.
+Test execution output.
+Debugging information if tests fail.
+
+3. Accessing Test Results
+Workflow Artifacts
+If the workflow saves test results to ./test-results/results.xml, you can retrieve them via artifacts:
+
+After the workflow completes (successfully or with failures), go to the Actions tab.
+Click on the specific workflow run.
+Look for the Artifacts section in the workflow summary.
+Download the artifact (e.g., test-results.zip) containing the results.xml file.
+Using the Test Results
+The results.xml file contains test results in JUnit XML format, which can be:
+Viewed Locally:
+Use an XML viewer/editor to examine the test results.
+Integrated with Tools:
+Import the file into CI tools (like Jenkins) or test result viewers for a structured display.
+
+4. Debugging Test Failures
+Check Logs:
+Expand the "Run Playwright tests" step in the Actions logs to see error messages or stack traces.
+Analyze Results:
+Open results.xml to identify which tests failed and the reasons.
+
+5. Workflow Maintenance
+Common Adjustments
+Modify Test Configuration:
+Update the .github/workflows/ci.yml file to change triggers or environment settings.
+
+Local Testing
+Replicate the CI/CD process locally to debug before pushing changes:
+
+Run the following commands in your terminal:
+npm install
+npx playwright test
+
+Check the ./test-results/results.xml file locally for test results.
+
+6. Rerunning the Workflow
+If a workflow fails, you can retry it without pushing new code:
+Open the Actions tab.
+Select the failed workflow.
+Click Re-run jobs.
