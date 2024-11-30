@@ -35,4 +35,4 @@ jobs:
         uses: actions/upload-artifact@v3
         with:
           name: test-results
-          path: results.xml # Ensure this matches your reporter output
+          path: ./test-results/results.xml # Ensure this matches your reporter output
