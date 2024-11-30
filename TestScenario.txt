@@ -1,0 +1,234 @@
+Test scenarios
+Basic URL: https://jsonplaceholder.typicode.com/
+Testing resource: /posts
+Testing methods: GET, POST, PUT, DELETE
+
+
+		GET Request scenarios:
+
+	Positive scenarios:
+1. Retrieve all posts from the endpoint.
+	Endpoint: /posts
+	Expected Result: The response status code is 200 OK.
+	The response body contains an array of posts. 
+	The response data should be in JSON format.
+
+2. Retrieve a specific post by its ID
+	Endpoint: /posts/{id}
+	Expected Result: The response status code is 200 OK.
+	Response body should contain all expected post details (userId, id, title, and body).
+	The content of the id field matches the requested post ID.
+	Ensures the title and body fields are strings and not null.
+	
+3. Retrieve posts with query parameters
+	Endpoint: /posts?userId={userId}
+	Expected Result: The response status code is 200 OK.
+	The response should return an array of posts. 
+	The response body should contain only resources that match the query parameter userId
+	
+4. Verify API Response Time
+	Define an acceptable threshold for response time less than 2 seconds.
+	Endpoint: /posts/{id}
+	Expected Result: The response status code is 200 OK.
+	The response time is less than 2 seconds.
+	
+
+	Negative scenarios:
+5. Retrieve a non-existent post by ID 
+	Endpoint: /posts/{non-existent id}	
+	Expected Result: Status code is 404.
+                     Response body is empty.
+
+6. Retrieve posts with non-existent userId query parameter
+	Endpoint: /posts?userId={non-existent userId}
+	Expected Result: The response status code is 200 OK.
+                     Response body is empty array.
+
+7. Retrieve post with string ID
+	Endpoint: /posts/{string id}
+	Expected Result: Status code is 404.
+		         Response body is empty.
+
+8. Retrieve post with special symbols in ID
+	Endpoint: /posts/!@#$%^&*()
+	Expected Result: Status code is 404.
+		         Response body is empty.
+
+9. Retrieve post with SQL injection attempt
+	Endpoint: /posts/1; DROP TABLE users
+	Expected Result: Status code is 404.
+		         Response body is empty.
+
+
+		POST Request scenarios:
+	Positive scenarios:
+1. Create a post with valid data
+	Endpoint: /posts
+	Expected Result: The response status code is 201 Created.
+	The response data should be in JSON format.
+	The response body should contain property id. 
+	The response body parameters as userId, title and body should be the same as in request
+
+2. Create a post with minimal required data
+	Endpoint: /posts
+	Expected Result: The response status code is 201 Created.
+	The response body should contain property id. 
+	The response body should contain all other parameters, except body.
+	
+3. Verify API Response Time
+	Define an acceptable threshold for response time less than 2 seconds.
+	Endpoint: /posts
+	Expected Result: The response status code is 200 OK.
+	The response time is less than 2 seconds.
+
+	Negative scenarios:
+3. Send an empty request body
+(Mock API accept empty body)
+	Endpoint: /posts
+	Expected Result: The response status code is 201 Created.
+	The response body should contain property id. 
+	The response body shouldn't contain any other properties, except id. 
+
+4. Send a post with invalid data types
+(Mock API accept invalid types)
+Endpoint: /posts
+	Expected Result: The response status code is 201 Created.
+	The response body should contain property id. 
+	The response body parameters as userId, title and body should have the same type as in request
+	
+5. Send a request body with extra field
+(Mock API create post with extra field)
+Endpoint: /posts
+	Expected Result: The response status code is 201 Created.
+	The response body should contain property id. 
+	All response body parameters should be the same as in request
+	
+6. Send a post with missing required fields		
+(Mock API accept post only with boby)
+Endpoint: /posts
+	Expected Result: The response status code is 201 Created.
+	The response body should contain only properties id and body
+
+7. Send a post with special characters
+(Mock API accept post with special characters)
+Endpoint: /posts
+	Expected Result: The response status code is 201 Created.
+	The response body should contain property id. 
+	The response body parameters as userId, title and body should be the same as in request
+
+8. Send a post with large payload
+(Mock API accept post with large payload)
+Endpoint: /posts
+	Expected Result: The response status code is 201 Created.
+	The response body should contain property id. 
+	The response body parameters as userId, title and body should be the same as in request
+
+9. Send a post with SQL injection attempt
+Endpoint: /posts
+	Expected Result: The response status code is 201 Created.
+	The response body should contain property id. 
+	The response body parameters as userId, title and body should be the same as in request
+
+10. Send a post to a non-existent endpoind
+Endpoint: /invalid-endpoint
+	Expected Result: The response status code is 404 Not Found.
+
+
+
+		PUT Request scenarios:
+
+	Positive scenarios:
+1. Update an existing post with valid data
+Endpoint: posts/1
+	Expected Result: The response status code is 200 OK.
+	The data should be in JSON format.	
+	The response body should contain the same parameters as in request.
+	
+2. Update only some fields of a post
+Endpoint: posts/1
+	Expected Result: The response status code is 200 OK.
+	The response body should contain only parameters that are present in request.
+
+3. Verify API Response Time
+	Define an acceptable threshold for response time less than 2 seconds.
+	Endpoint: /posts
+	Expected Result: The response status code is 200 OK.
+	The response time is less than 2 seconds.	
+	
+	Negative scenarios:
+1. Update an existing post
+(Mock API returns 500 Internal Server Error)
+Endpoint: posts/9999999
+	Expected Result: The response status code is 500 Internal Server Error.
+
+2. Update a post with missing required fields
+Endpoint: posts/1
+	Expected Result: The response status code is 200 OK.
+	The response body should contain only id.
+
+3. Send a PUT request with invalid data types
+(Mock API accept invalid types)
+Endpoint: posts/1
+	Expected Result: The response status code is 200 OK.
+	The response body parameters as userId, title and body should have the same type as in request
+
+4. Send a PUT request with special characters
+(Mock API accept post with special characters)
+Endpoint: posts/1
+	Expected Result: The response status code is 200 OK.
+	The response body parameters as userId, title and body should have the same type as in request
+
+
+		DELETE Request scenarios:
+
+	Positive scenarios:
+
+1. Delete an existing post
+Endpoint: posts/{id}
+	Expected Result: The response status code is 200 OK.
+	The response body should contain empty object.
+
+2. Delete with query parameters
+Endpoint: posts/{id}?userId={userId}
+Expected Result: The response status code is 200 OK.
+	The response body should contain empty object.
+
+3. Verify API Response Time
+Define an acceptable threshold for response time less than 2 seconds.
+	Endpoint: /posts/{id}
+	Expected Result: The response status code is 200 OK.
+	The response time is less than 2 seconds.
+
+	Negative scenarios:
+
+
+1. Delete non-existing post
+(Mock API returns 200 OK)
+Endpoint: posts/9999999
+	Expected Result: The response status code is 200 OK.
+	The response body should contain empty object.
+	
+2. Delete post with invalid ID
+(Mock API returns 200 OK)
+Endpoint: /posts/invalid-id
+	Expected Result: The response status code is 200 OK.
+	The response body should contain empty object.
+
+
+3. Delete a post using special characters in ID
+(Mock API returns 200 OK)
+Endpoint: /posts/%21%40%23%24
+	Expected Result: The response status code is 200 OK.
+	The response body should contain empty object.
+
+
+4. Delete with extra query parameters
+(Mock API returns 200 OK)
+Endpoint: posts/{id}?extraParameter=testValue
+	Expected Result: The response status code is 200 OK.
+	The response body should contain empty object.
+
+
+5. Delete with missing ID in the URL
+Endpoint: posts/
+	Expected Result: The response status code is 404 Not Found.

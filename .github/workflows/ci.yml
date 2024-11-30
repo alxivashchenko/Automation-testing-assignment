@@ -1,0 +1,38 @@
+name: Playwright API Tests
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+
+jobs:
+  run-playwright-tests:
+    runs-on: ubuntu-latest
+
+    steps:
+      # Step 1: Check out the repository
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      # Step 2: Set up Node.js
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: "18"
+
+      # Step 3: Install dependencies
+      - name: Install dependencies
+        run: npm install
+
+      # Step 4: Run Playwright tests
+      - name: Run Playwright tests
+        run: npm run test
+
+      # Step 5: Archive test results
+      - name: Upload Test Results
+        if: always() # Always upload test results even if tests fail
+        uses: actions/upload-artifact@v3
+        with:
+          name: test-results
+          path: results.xml # Ensure this matches your reporter output
